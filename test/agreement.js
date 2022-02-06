@@ -33,6 +33,9 @@ describe("on deployment", function () {
   it("contract exists", async function () {
     var interaction = await hardhatAgreement.InteractionMap(0)
     console.log(interaction)
-    assert.ok(interaction);
+    expect(interaction.partyA).to.equal(constants.ZERO_ADDRESS);
+    expect(interaction.partyB).to.equal(constants.ZERO_ADDRESS);
+    expect(interaction.data).to.equal('');
+    expect(interaction.accepted).to.equal(false);
   });
 });
