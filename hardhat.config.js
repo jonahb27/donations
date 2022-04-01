@@ -30,7 +30,11 @@ module.exports = {
     ropsten: {
       url: `https://eth-ropsten.alchemyapi.io/v2/${process.env.ROPSTEN_ALCHEMY_API_KEY}`,
       accounts: [`${process.env.ROPSTEN_PRIVATE_KEY}`],
-    }
+    },
+    rinkeby: {
+      url: `https://eth-goerli.alchemyapi.io/v2/${process.env.RINKEBY_ALCHEMY_API_KEY}`,
+      accounts: [`${process.env.RINKEBY_PRIVATE_KEY}`],
+    },
   },
   abiExporter: {
     path: './data/abi',

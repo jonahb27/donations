@@ -13,7 +13,6 @@ contract Donations is Ownable {
     struct Donor {
         uint given;
         uint raised;
-        ERC721 erc721;
     }
 
     struct Charity {
@@ -149,15 +148,29 @@ contract Donations is Ownable {
     }
 
 
-    // //TODO:
-    // function _mint(address _charity, uint _level) {
-    //     Donor storage donor = donors[_charity][msg.sender]
-    //     nft.mint(donor.given, donor.raised, _level);
+    // function mintNFT(address _charity, uint _level)
+    //     external
+    //     isExistingCharity(_charity)
+    //     {
+    //     _mintNFT(_charity, _level);
+    // }
+    //  function _mintNFT(address _charity, uint _level) internal {
+    //     address sender = msg.sender;
+    //     Donor storage donor = donors[_charity][sender];
+    //     charities[_charity].erc721.mint(sender, donor.given, donor.raised, _level);
     // }
 
-    // function _updateNFT(address _charity, uint _level) {
-    //     Donor storage donor = donors[_charity][msg.sender]
-    //     nft.updateMetadata(donor.given, donor.raised, _level);
+    // function updateNFT(address _charity, uint _level)
+    //     external
+    //     isExistingCharity(_charity)
+    //     {
+    //     _updateNFT(_charity, _level);
+    // }
+
+    // function _updateNFT(address _charity, uint _level) internal {
+    //     address sender = msg.sender;
+    //     Donor storage donor = donors[_charity][sender];
+    //     charities[_charity].erc721.updateMetadata(sender, donor.given, donor.raised, _level);
     // }
 
 }

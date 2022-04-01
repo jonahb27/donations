@@ -6,9 +6,11 @@
 REPORT_GAS=true
 COINMARKETCAP_API_KEY=[API key from]
 GOERLI_ALCHEMY_API_KEY=[Goerli Alchemy API key]
-GOERLI_PRIVATE_KEY=[Goerli API key]
+GOERLI_PRIVATE_KEY=[Goerli Private key]
 ROPSTEN_ALCHEMY_API_KEY=[Ropsten Alchemy API key]
-ROPSTEN_PRIVATE_KEY=[Ropsten API key]
+ROPSTEN_PRIVATE_KEY=[Ropsten Private key]
+RINKEBY_ALCHEMY_API_KEY=[Rinkeby Alchemy API key]
+RINKEBY_PRIVATE_KEY=[Rinkeby Private key]
 ETHERSCAN_API_KEY=[etherscan api key]
 ```
 
