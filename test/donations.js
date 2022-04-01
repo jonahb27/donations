@@ -123,11 +123,63 @@ describe("addCharity", function () {
 
 
 describe("donate", function () {
-  this.beforeEach(async () => {
-    await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+  describe("donation reverts", function () {
+    // not an existing charity
+
+    it("donate to nonexisting charity", async function () {
+      await expect(
+        hardhatDonations
+          .connect(donor1)
+          .donate(char1.address, { value: ethAmount(3) })
+      ).to.be.revertedWith(revertMessages.isExistingCharity);
+    });
+
+    it("donate charity to charity", async function () {
+      await hardhatDonations
+        .connect(owner)
+        .addCharity(char1.address, nft1.address);
+
+      await expect(
+        hardhatDonations.connect(char1).donate(char1.address)
+      ).to.be.revertedWith(revertMessages.notExistingCharity);
+    });
+
+    it("donate charity to charity 2", async function () {
+      await hardhatDonations
+        .connect(owner)
+        .addCharity(char1.address, nft1.address);
+
+      await hardhatDonations
+        .connect(owner)
+        .addCharity(char2.address, nft2.address);
+
+      await expect(
+        hardhatDonations.connect(char1).donate(char2.address)
+      ).to.be.revertedWith(revertMessages.notExistingCharity);
+    });
+
+    it("donate 0 to charity", async function () {
+      await hardhatDonations
+        .connect(owner)
+        .addCharity(char1.address, nft1.address);
+
+      await hardhatDonations
+        .connect(owner)
+        .addCharity(char2.address, nft2.address);
+
+      await expect(
+        hardhatDonations
+          .connect(donor1)
+          .donate(char2.address, { value: ethAmount(0) })
+      ).to.be.revertedWith(revertMessages.needToBePositive);
+    });
   });
 
-  describe("donation reverts", function () {
+  describe("donation basics", function () {
+    this.beforeEach(async () => {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+    });
+
     it("basic donate", async function () {
       await checkDonor(donor1.address, char1.address, 0, 0);
 
@@ -172,8 +224,123 @@ describe("donate", function () {
 });
 
 describe("donateWithRefferral", function () {
+  describe("donateWithRefferral reverts", function() {
+    it ("donateWithRefferal non existing charity", async function() {
+      await expect(
+        hardhatDonations
+          .connect(donor1)
+          .donateWithRefferral(char1.address, donor2.address)
+        ).to.be.revertedWith(revertMessages.isExistingCharity);
 
-  describe("donateWithRefferral", function () {
+    });
+
+    it ("donateWithRefferal refferer zero address", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+
+
+      await expect(
+        hardhatDonations
+          .connect(donor1)
+          .donateWithRefferral(char1.address, constants.ZERO_ADDRESS)
+        ).to.be.revertedWith(revertMessages.notZeroAddress);
+
+    });
+
+    it ("donateWithRefferal refferer zero address 2", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+
+
+      await expect(
+        hardhatDonations
+          .connect(donor2)
+          .donateWithRefferral(char2.address, constants.ZERO_ADDRESS)
+        ).to.be.revertedWith(revertMessages.notZeroAddress);
+
+    });
+
+    it ("donateWithRefferal charity to charity", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+
+
+      await expect(
+        hardhatDonations
+          .connect(char1)
+          .donateWithRefferral(char2.address, donor2.address)
+        ).to.be.revertedWith(revertMessages.notExistingCharity);
+
+    });
+
+    it ("donateWithRefferal charity to charity 2", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+
+
+      await expect(
+        hardhatDonations
+          .connect(char2)
+          .donateWithRefferral(char1.address, donor1.address)
+        ).to.be.revertedWith(revertMessages.notExistingCharity);
+
+    });
+
+    it ("donateWithRefferal donor and refferer equal", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+
+
+      await expect(
+        hardhatDonations
+          .connect(donor1)
+          .donateWithRefferral(char1.address, donor1.address)
+        ).to.be.revertedWith(revertMessages.addressesNotEqual);
+
+    });
+
+    it ("donateWithRefferal donor and refferer equal 2", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+
+
+      await expect(
+        hardhatDonations
+          .connect(donor2)
+          .donateWithRefferral(char2.address, donor2.address)
+        ).to.be.revertedWith(revertMessages.addressesNotEqual);
+
+    });
+
+    it ("donateWithRefferal zero donation", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+
+
+      await expect(
+        hardhatDonations
+          .connect(donor1)
+          .donateWithRefferral(char1.address, donor2.address, {value: ethAmount(0)})
+        ).to.be.revertedWith(revertMessages.needToBePositive);
+
+    });
+
+    it ("donateWithRefferal zero donation 2", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+
+
+      await expect(
+        hardhatDonations
+          .connect(donor2)
+          .donateWithRefferral(char2.address, donor1.address, {value: ethAmount(0)})
+        ).to.be.revertedWith(revertMessages.needToBePositive);
+
+    });
+
+  });
+
+  describe("donateWithRefferral basic", function () {
 
     this.beforeEach(async () => {
       await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
