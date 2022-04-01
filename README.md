@@ -39,7 +39,7 @@ Typical task:
     - Pull changes `git pull`
 
 
-If you find yourself tracking node_modules `rm -r --cached node_modules`
+If you find yourself tracking node_modules `git rm -r --cached node_modules`
 
 6. In Terminal, run `npx hardhat run scripts/deploy.js --network ropsten` to deploy the contract on ropsten (note you can run the command with goerli if perffered). 
 
