@@ -148,6 +148,19 @@ contract Donations is Ownable {
     }
 
 
+    //-------getters functions ---
+    function getGiven(address _charity, address _donor) external view returns (uint amount) {
+       return donors[_charity][_donor].given;
+    }
+
+    function getRaised(address _charity, address _donor) external view returns (uint amount) {
+       return donors[_charity][_donor].raised;
+    }
+
+    function getTotalRaised(address _charity) external view returns (uint amount) {
+       return charities[_charity].totalRaised;
+    }
+
     // function mintNFT(address _charity, uint _level)
     //     external
     //     isExistingCharity(_charity)

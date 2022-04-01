@@ -415,6 +415,7 @@ describe("donateWithRefferral", function () {
 async function checkCharity(charityAddress, totalRaised, totalPending, approved, erc721Address) {
   var charity = await hardhatDonations.charities(charityAddress)
   expect(charity.totalRaised).to.equal(totalRaised);
+  expect(await hardhatDonations.getTotalRaised(charityAddress)).to.equal(totalRaised);
   expect(charity.totalPending).to.equal(totalPending);
   expect(charity.approved).to.equal(approved);
   expect(charity.erc721).to.equal(erc721Address);
@@ -424,6 +425,8 @@ async function checkDonor(donorAddress, charityAddress, given, raised) {
   var donor = await hardhatDonations.donors(charityAddress, donorAddress)
   expect(donor.given).to.equal(given);
   expect(donor.raised).to.equal(raised);
+  expect(await hardhatDonations.getGiven(charityAddress, donorAddress)).to.equal(given);
+  expect(await hardhatDonations.getRaised(charityAddress, donorAddress)).to.equal(raised);
 }
 
 function ethAmount(amount) {
