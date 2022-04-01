@@ -9,7 +9,10 @@ GOERLI_ALCHEMY_API_KEY=[Goerli Alchemy API key]
 GOERLI_PRIVATE_KEY=[Goerli API key]
 ROPSTEN_ALCHEMY_API_KEY=[Ropsten Alchemy API key]
 ROPSTEN_PRIVATE_KEY=[Ropsten API key]
+ETHERSCAN_API_KEY=[etherscan api key]
 ```
+
+comment out `REPORT_GAS` (add `# REPORT_GAS=true`) if you don't want the gas thing
 
 ### In order to get the neccisary keys:
 * [Coin Market Cap Key](https://coinmarketcap.com/api/) 
@@ -34,3 +37,18 @@ Typical task:
     - Change branches `git switch <new branch name>`
 8. pull changes
     - Pull changes `git pull`
+
+
+If you find yourself tracking node_modules `rm -r --cached node_modules`
+
+6. In Terminal, run `npx hardhat run scripts/deploy.js --network ropsten` to deploy the contract on ropsten (note you can run the command with goerli if perffered). 
+
+
+## 3) Deploy contract:
+`npx hardhat run scripts/deploy.js --network ropsten` 
+
+## 4) Verifying the contract:
+run `npx hardhat clean` then `npx hardhat verify --network [network name] [contract address]` 
+
+## 5) to check coverage of tests
+`npx hardhat coverage`
