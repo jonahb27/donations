@@ -17,12 +17,13 @@ let char2;
 let donor1;
 let donor2;
 let nft1;
+let nft2;
 let signerList;
 let hardhatRound;
 
 beforeEach(async () => {
   signerList = await ethers.getSigners(); // get accounts
-  [owner, char1, char2, donor1, donor2, nft1] = signerList;
+  [owner, char1, char2, donor1, donor2, nft1, nft2] = signerList;
   const Donations = await ethers.getContractFactory("Donations");
   hardhatDonations= await Donations.deploy();
 });
@@ -68,6 +69,7 @@ describe("addCharity", function () {
       await expect(
         hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
       );
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
       await expect(
         hardhatDonations.connect(owner)
                         .addCharity(char1.address, nft1.address))
@@ -81,13 +83,37 @@ describe("addCharity", function () {
       //charity not created
       await checkCharity(char1.address, 0, 0, false, constants.ZERO_ADDRESS);
 
-      //create charity
+      //add charity
       await expect(hardhatDonations.connect(owner).addCharity(char1.address, nft1.address))
         .to.emit(hardhatDonations, "NewCharity")
         .withArgs(char1.address, nft1.address);
 
       //its created
       await checkCharity(char1.address, 0, 0, true, nft1.address);
+    });
+
+    it("create 2 charities", async function () {
+      //charity not created
+      await checkCharity(char1.address, 0, 0, false, constants.ZERO_ADDRESS);
+      await checkCharity(char2.address, 0, 0, false, constants.ZERO_ADDRESS);
+
+      //add charity 1
+      await expect(hardhatDonations.connect(owner).addCharity(char1.address, nft1.address))
+        .to.emit(hardhatDonations, "NewCharity")
+        .withArgs(char1.address, nft1.address);
+
+      //its created
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, false, constants.ZERO_ADDRESS);
+
+      //add charity 2
+      await expect(hardhatDonations.connect(owner).addCharity(char2.address, nft2.address))
+        .to.emit(hardhatDonations, "NewCharity")
+        .withArgs(char2.address, nft2.address);
+      
+      //its created
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
     });
 
   });
