@@ -130,7 +130,7 @@ describe("donate", function () {
       await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
     });
 
-    it("basic create", async function () {
+    it("basic donate", async function () {
       await checkDonor(donor1.address, char1.address, 0, 0);
 
       await expect(hardhatDonations
@@ -145,7 +145,7 @@ describe("donate", function () {
 
     });
 
-    it("basic create", async function () {
+    it("basic double donate", async function () {
       await checkDonor(donor1.address, char1.address, 0, 0);
 
       await expect(hardhatDonations
