@@ -145,6 +145,31 @@ describe("donate", function () {
 
     });
 
+    it("basic create", async function () {
+      await checkDonor(donor1.address, char1.address, 0, 0);
+
+      await expect(hardhatDonations
+              .connect(donor1)
+              .donate(char1.address, { value: ethAmount(3)}))
+              .to.emit(hardhatDonations, "NewDonation")
+              .withArgs(char1.address, donor1.address, ethAmount(3));
+
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+      await checkDonor(donor1.address, char1.address, ethAmount(3), 0);
+
+      await expect(hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)}))
+        .to.emit(hardhatDonations, "NewDonation")
+        .withArgs(char1.address, donor1.address, ethAmount(3));
+
+
+      await checkCharity(char1.address, ethAmount(6), ethAmount(6), true, nft1.address);
+
+      await checkDonor(donor1.address, char1.address, ethAmount(6), 0);
+    });
+
   });
 });
 
