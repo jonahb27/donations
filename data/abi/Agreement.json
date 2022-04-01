@@ -1,7 +1,0 @@
-[
-  "event newAccept(uint256,address,address,string)",
-  "event newPost(uint256,address,address,string)",
-  "function InteractionMap(uint256) view returns (address, address, string, bool)",
-  "function accept(uint256)",
-  "function post(address,string)"
-]
