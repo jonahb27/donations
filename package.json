@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alulushi1026/InteractionApp.git"
+    "url": "git+https://github.com/jonahb27/donations.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/alulushi1026/InteractionApp/issues"
+    "url": "https://github.com/jonahb27/donations/issues"
   },
-  "homepage": "https://github.com/alulushi1026/InteractionApp#readme",
+  "homepage": "https://github.com/jonahb27/donations#readme",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.3",
     "@nomiclabs/hardhat-etherscan": "^3.0.0",

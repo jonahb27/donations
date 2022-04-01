@@ -171,6 +171,61 @@ describe("donate", function () {
   });
 });
 
+describe("donateWithRefferral", function () {
+
+  describe("donateWithRefferral", function () {
+
+    this.beforeEach(async () => {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+    });
+
+    it("basic donateWithRefferral", async function () {
+      await checkDonor(donor1.address, char1.address, 0, 0);
+      await checkDonor(donor2.address, char1.address, 0, 0);
+
+
+      await expect(hardhatDonations
+              .connect(donor1)
+              .donateWithRefferral(char1.address, donor2.address, {value: ethAmount(3)}))
+              .to.emit(hardhatDonations, "NewDonationWithRefferal")
+              .withArgs(char1.address, donor1.address, donor2.address, ethAmount(3));
+
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+      await checkDonor(donor1.address, char1.address, ethAmount(3), 0);
+      await checkDonor(donor2.address, char1.address, 0, ethAmount(3));
+
+    });
+
+    it("double donateWithRefferral", async function () {
+      await checkDonor(donor1.address, char1.address, 0, 0);
+      await checkDonor(donor2.address, char1.address, 0, 0);
+      
+      await expect(hardhatDonations
+              .connect(donor1)
+              .donateWithRefferral(char1.address, donor2.address, {value: ethAmount(3)}))
+              .to.emit(hardhatDonations, "NewDonationWithRefferal")
+              .withArgs(char1.address, donor1.address, donor2.address, ethAmount(3));
+
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+      await checkDonor(donor1.address, char1.address, ethAmount(3), 0);
+      await checkDonor(donor2.address, char1.address, 0, ethAmount(3));
+
+      await expect(hardhatDonations
+        .connect(donor2)
+        .donateWithRefferral(char1.address, donor1.address, {value: ethAmount(3)}))
+        .to.emit(hardhatDonations, "NewDonationWithRefferal")
+        .withArgs(char1.address, donor2.address, donor1.address, ethAmount(3));
+
+      await checkCharity(char1.address, ethAmount(6), ethAmount(6), true, nft1.address);
+      await checkDonor(donor1.address, char1.address, ethAmount(3), ethAmount(3));
+      await checkDonor(donor2.address, char1.address, ethAmount(3), ethAmount(3));
+
+    });
+
+  });
+    
+});
+
 async function checkCharity(charityAddress, totalRaised, totalPending, approved, erc721Address) {
   var charity = await hardhatDonations.charities(charityAddress)
   expect(charity.totalRaised).to.equal(totalRaised);
