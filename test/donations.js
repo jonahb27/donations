@@ -123,13 +123,11 @@ describe("addCharity", function () {
 
 
 describe("donate", function () {
+  this.beforeEach(async () => {
+    await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+  });
 
   describe("donation reverts", function () {
-
-    this.beforeEach(async () => {
-      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
-    });
-
     it("basic donate", async function () {
       await checkDonor(donor1.address, char1.address, 0, 0);
 
