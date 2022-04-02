@@ -4,7 +4,8 @@ const revertMessages = {
   notExistingCharity: "CANNOT be approved Charity",
   isExistingCharity: "Must be approved Charity",
   addressesNotEqual: "Addresses CANNOT be the same",
-  needToBePositive: "Donation CANNOT be Zero"
+  needToBePositive: "Donation CANNOT be Zero",
+  pendingNeedToBePositive: "Pending CANNOT be Zero"
 };
   
 module.exports = { revertMessages };

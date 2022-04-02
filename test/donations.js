@@ -195,24 +195,22 @@ describe("donate", function () {
 
     });
 
-    // it("basic donate check sender balance", async function () {
-    //   await checkDonor(donor1.address, char1.address, 0, 0);
-    //   const before = await ethers.provider.getBalance(donor1.address);
-    //   await expect(hardhatDonations
-    //           .connect(donor1)
-    //           .donate(char1.address, { value: ethAmount(3)}))
-    //           .to.emit(hardhatDonations, "NewDonation")
-    //           .withArgs(char1.address, donor1.address, ethAmount(3));
-    //   const after = await ethers.provider.getBalance(donor1.address);
-    //   console.log(before);
-    //   console.log(after);
-    //   assert(before.equal(after + ethAmount(3)));
+    it("basic donate check sender balance", async function () {
+      await checkDonor(donor1.address, char1.address, 0, 0);
+      var before = await getBalance(donor1.address);
+      await expect(hardhatDonations
+              .connect(donor1)
+              .donate(char1.address, { value: ethAmount(3)}))
+              .to.emit(hardhatDonations, "NewDonation")
+              .withArgs(char1.address, donor1.address, ethAmount(3));
+      var after = await getBalance(donor1.address);
+      assert.isAbove(before - 3, after, 'less than before - sent');
 
-    //   await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
       
-    //   await checkDonor(donor1.address, char1.address, ethAmount(3), 0);
+      await checkDonor(donor1.address, char1.address, ethAmount(3), 0);
 
-    // });
+    });
 
     it("basic double donate", async function () {
       await checkDonor(donor1.address, char1.address, 0, 0);
@@ -382,6 +380,28 @@ describe("donateWithRefferral", function () {
 
     });
 
+    it("basic donateWithRefferral check sender balance", async function () {
+      await checkDonor(donor1.address, char1.address, 0, 0);
+      await checkDonor(donor2.address, char1.address, 0, 0);
+      var before = await getBalance(donor1.address);
+
+      await expect(hardhatDonations
+              .connect(donor1)
+              .donateWithRefferral(char1.address, donor2.address, {value: ethAmount(3)}))
+              .to.emit(hardhatDonations, "NewDonationWithRefferal")
+              .withArgs(char1.address, donor1.address, donor2.address, ethAmount(3));
+      
+      var after = await getBalance(donor1.address);
+      assert.isAbove(before - 3, after, 'less than before - sent');
+
+
+
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+      await checkDonor(donor1.address, char1.address, ethAmount(3), 0);
+      await checkDonor(donor2.address, char1.address, 0, ethAmount(3));
+
+    });
+
     it("double donateWithRefferral", async function () {
       await checkDonor(donor1.address, char1.address, 0, 0);
       await checkDonor(donor2.address, char1.address, 0, 0);
@@ -412,6 +432,439 @@ describe("donateWithRefferral", function () {
     
 });
 
+describe("withdraw", function () {
+  describe("withdraw revert", function () {
+    it ("withdraw not existing charity", async function() {
+      await checkCharity(char1.address, 0, 0, false, constants.ZERO_ADDRESS);
+
+      await expect(
+        hardhatDonations
+          .connect(char1)
+          .withdraw()).to.be
+          .revertedWith(revertMessages.isExistingCharity);
+    });
+
+    it ("withdraw 0 amount", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address);
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address);
+
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+
+      await expect(
+        hardhatDonations
+          .connect(char1)
+          .withdraw({value: ethAmount(0)})).to.be
+          .revertedWith(revertMessages.pendingNeedToBePositive);
+    });
+
+    it ("withdraw 0 amount 2", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address);
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address);
+
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+
+
+      await expect(
+        hardhatDonations
+          .connect(char1)
+          .withdraw({value: ethAmount(0)})).to.be
+          .revertedWith(revertMessages.pendingNeedToBePositive);
+
+      await expect(
+        hardhatDonations
+          .connect(char2)
+          .withdraw({value: ethAmount(0)})).to.be
+          .revertedWith(revertMessages.pendingNeedToBePositive);
+    });
+
+  });
+
+  describe("withdraw basic", function () {
+    
+    this.beforeEach(async () => {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+    });
+
+    it ("withdraw basic check balance", async function() {
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      var before = await getBalance(char1.address);
+      var beforeDonor = await getBalance(donor1.address);
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
+      
+      
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+      await hardhatDonations
+          .connect(char1)
+          .withdraw();
+
+      await checkCharity(char1.address, ethAmount(3), 0, true, nft1.address);
+
+
+      var after = await getBalance(char1.address);
+      var afterDonor = await getBalance(donor1.address);
+
+      assert.isAbove(before + 3, after, 'increase in charity');
+      assert.isAbove(beforeDonor - 3, afterDonor, 'increase in charity');
+
+    });
+
+    it ("withdraw basic check balance double", async function() {
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      var before = await getBalance(char1.address);
+      var before2 = await getBalance(char2.address);
+      var beforeDonor = await getBalance(donor1.address);
+
+
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
+      
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+
+      await hardhatDonations
+          .connect(char1)
+          .withdraw();
+
+      await checkCharity(char1.address, ethAmount(3), 0, true, nft1.address);
+
+
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char2.address, { value: ethAmount(3)});
+
+      await checkCharity(char2.address, ethAmount(3), ethAmount(3), true, nft2.address);
+
+      
+      await hardhatDonations
+          .connect(char2)
+          .withdraw();
+      
+      await checkCharity(char2.address, ethAmount(3), 0, true, nft2.address);
+
+
+      var after = await getBalance(char1.address);
+      var after2 = await getBalance(char2.address);
+      var afterDonor = await getBalance(donor1.address);
+
+      assert.isAbove(before + 3, after, 'increase in charity');
+      assert.isAbove(before2 + 3, after2, 'increase in charity');
+      assert.isAbove(beforeDonor - 6, afterDonor, 'increase in donor');
+
+    });
+
+    it ("withdraw basic", async function() {
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+      await expect(hardhatDonations
+        .connect(char1)
+        .withdraw())
+        .to.emit(hardhatDonations, "Withdrawl")
+        .withArgs(char1.address, ethAmount(3));
+
+      await checkCharity(char1.address, ethAmount(3), 0, true, nft1.address);
+
+    });
+
+    it ("withdraw basic double to one charity", async function() {
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
+      
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+      await hardhatDonations
+        .connect(donor2)
+        .donate(char1.address, { value: ethAmount(3)});
+      
+      await checkCharity(char1.address, ethAmount(6), ethAmount(6), true, nft1.address);
+
+      
+      await expect(hardhatDonations
+        .connect(char1)
+        .withdraw())
+        .to.emit(hardhatDonations, "Withdrawl")
+        .withArgs(char1.address, ethAmount(6));
+
+      await checkCharity(char1.address, ethAmount(6), 0, true, nft1.address);
+
+
+    });
+
+    it ("withdraw basic double to two charity", async function() {
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
+      
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+
+      await hardhatDonations
+        .connect(donor2)
+        .donate(char2.address, { value: ethAmount(3)});
+      
+      await checkCharity(char2.address, ethAmount(3), ethAmount(3), true, nft2.address);
+
+      await expect(hardhatDonations
+        .connect(char1)
+        .withdraw())
+        .to.emit(hardhatDonations, "Withdrawl")
+        .withArgs(char1.address, ethAmount(3));
+
+      await checkCharity(char1.address, ethAmount(3), 0, true, nft1.address);
+
+
+      await expect(hardhatDonations
+          .connect(char2)
+          .withdraw())
+          .to.emit(hardhatDonations, "Withdrawl")
+          .withArgs(char2.address, ethAmount(3));
+
+      await checkCharity(char2.address, ethAmount(3), 0, true, nft2.address);
+
+
+    });
+  
+  });
+
+
+});
+
+describe("saveFunds", function () {
+  describe("saveFunds revert", function () {
+    it("saveFunds onlyOwner donor", async function () {
+      await expect(
+        hardhatDonations.connect(donor1)
+                        .saveFunds(char1.address))
+                        .to.be.revertedWith(revertMessages.onlyOwner);
+    });
+
+    it("saveFunds onlyOwner charity", async function () {
+      await expect(
+        hardhatDonations.connect(char1)
+                        .saveFunds(char1.address))
+                        .to.be.revertedWith(revertMessages.onlyOwner);
+    });
+
+    it("saveFunds not existing charity", async function() {
+      await expect(
+        hardhatDonations.connect(owner)
+                        .saveFunds(char1.address))
+                        .to.be.revertedWith(revertMessages.isExistingCharity);
+    });
+
+    it("saveFunds withdraw revert 0 amount", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address);
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address);
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      await expect(
+        hardhatDonations.connect(owner)
+                        .saveFunds(char1.address))
+                        .to.be.revertedWith(revertMessages.pendingNeedToBePositive);
+    });
+
+    it("saveFunds withdraw revert 0 amount double", async function() {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address);
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address);
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      await hardhatDonations.connect(donor1).
+            donate(char1.address, {value: ethAmount(3)});
+
+      await expect(
+        hardhatDonations.connect(owner)
+                        .saveFunds(char2.address))
+                        .to.be.revertedWith(revertMessages.pendingNeedToBePositive);
+    });
+
+
+  });
+
+  describe("saveFunds basic", function() {
+    this.beforeEach(async () => {
+      await hardhatDonations.connect(owner).addCharity(char1.address, nft1.address)
+      await hardhatDonations.connect(owner).addCharity(char2.address, nft2.address)
+    });
+
+    // it ("saveFunds basic check balance", async function() {
+    //   await checkCharity(char1.address, 0, 0, true, nft1.address);
+    //   await checkCharity(char2.address, 0, 0, true, nft2.address);
+    //   var before = await getBalance(char1.address);
+    //   var beforeDonor = await getBalance(donor1.address);
+    //   await hardhatDonations
+    //     .connect(donor1)
+    //     .donate(char1.address, { value: ethAmount(3)});
+      
+      
+    //   await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+    //   await hardhatDonations
+    //       .connect(owner)
+    //       .saveFunds(char1.address);
+
+    //   await checkCharity(char1.address, ethAmount(3), 0, true, nft1.address);
+
+
+    //   var after = await getBalance(char1.address);
+    //   var afterDonor = await getBalance(donor1.address);
+
+    //   // why is this? 
+    //   assert.isBelow(before + (ethAmount(3) / 1e18), after, 'increase in charity');
+    //   assert.isAbove(beforeDonor - 3, afterDonor, 'increase in charity');
+
+    // });
+
+    // it ("withdraw basic check balance double", async function() {
+    //   await checkCharity(char1.address, 0, 0, true, nft1.address);
+    //   await checkCharity(char2.address, 0, 0, true, nft2.address);
+    //   var before = await getBalance(char1.address);
+    //   var before2 = await getBalance(char2.address);
+    //   var beforeDonor = await getBalance(donor1.address);
+
+
+    //   await hardhatDonations
+    //     .connect(donor1)
+    //     .donate(char1.address, { value: ethAmount(3)});
+      
+    //   await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+
+    //   await hardhatDonations
+    //       .connect(owner)
+    //       .saveFunds(char1.address);
+
+    //   await checkCharity(char1.address, ethAmount(3), 0, true, nft1.address);
+
+
+    //   await hardhatDonations
+    //     .connect(donor1)
+    //     .donate(char2.address, { value: ethAmount(3)});
+
+    //   await checkCharity(char2.address, ethAmount(3), ethAmount(3), true, nft2.address);
+
+      
+    //   await hardhatDonations
+    //       .connect(owner)
+    //       .saveFunds(char2.address);
+      
+    //   await checkCharity(char2.address, ethAmount(3), 0, true, nft2.address);
+
+
+    //   var after = await getBalance(char1.address);
+    //   var after2 = await getBalance(char2.address);
+    //   var afterDonor = await getBalance(donor1.address);
+
+    //   assert.isAbove(before + 3, after, 'increase in charity');
+    //   assert.isAbove(before2 + 3, after2, 'increase in charity');
+    //   assert.isAbove(beforeDonor - 6, afterDonor, 'increase in donor');
+
+    // });
+
+    it ("withdraw basic", async function() {
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+      await expect(hardhatDonations
+        .connect(owner)
+        .saveFunds(char1.address))
+        .to.emit(hardhatDonations, "Withdrawl")
+        .withArgs(char1.address, ethAmount(3));
+
+      await checkCharity(char1.address, ethAmount(3), 0, true, nft1.address);
+
+    });
+
+    it ("withdraw basic double to one charity", async function() {
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
+      
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+      await hardhatDonations
+        .connect(donor2)
+        .donate(char1.address, { value: ethAmount(3)});
+      
+      await checkCharity(char1.address, ethAmount(6), ethAmount(6), true, nft1.address);
+
+      
+      await expect(hardhatDonations
+        .connect(owner)
+        .saveFunds(char1.address))
+        .to.emit(hardhatDonations, "Withdrawl")
+        .withArgs(char1.address, ethAmount(6));
+
+      await checkCharity(char1.address, ethAmount(6), 0, true, nft1.address);
+
+
+    });
+
+    it ("withdraw basic double to two charity", async function() {
+      await checkCharity(char1.address, 0, 0, true, nft1.address);
+      await checkCharity(char2.address, 0, 0, true, nft2.address);
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
+      
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true, nft1.address);
+
+
+      await hardhatDonations
+        .connect(donor2)
+        .donate(char2.address, { value: ethAmount(3)});
+      
+      await checkCharity(char2.address, ethAmount(3), ethAmount(3), true, nft2.address);
+
+      await expect(hardhatDonations
+        .connect(owner)
+        .saveFunds(char1.address))
+        .to.emit(hardhatDonations, "Withdrawl")
+        .withArgs(char1.address, ethAmount(3));
+
+      await checkCharity(char1.address, ethAmount(3), 0, true, nft1.address);
+
+
+      await expect(hardhatDonations
+        .connect(owner)
+        .saveFunds(char2.address))
+        .to.emit(hardhatDonations, "Withdrawl")
+        .withArgs(char2.address, ethAmount(3));
+
+      await checkCharity(char2.address, ethAmount(3), 0, true, nft2.address);
+
+
+    });
+
+    
+
+  });
+
+
+});
+
 async function checkCharity(charityAddress, totalRaised, totalPending, approved, erc721Address) {
   var charity = await hardhatDonations.charities(charityAddress)
   expect(charity.totalRaised).to.equal(totalRaised);
@@ -428,4 +881,9 @@ async function checkDonor(donorAddress, charityAddress, given, raised) {
 
 function ethAmount(amount) {
   return web3.utils.toWei(amount.toString(), 'ether')
+}
+
+async function getBalance(address) {
+  var balance = (await ethers.provider.getBalance(address)) / 1e18;
+  return balance;
 }
