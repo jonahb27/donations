@@ -1,0 +1,18 @@
+{
+    "name": "Altruia x GiveWell Tier 02-02",
+    "description": "Altruia is a on-chain platform making charity and donations fun and transparent!",
+    "image": "ipfs://QmSw3N4aFvMp6MRLJz2XwWZ7u5dJYFiTM16C8k9j1iwxtf/",
+    "edition": 1,
+    "attributes": [
+        {
+            "id": 2,
+            "layer": "donated",
+            "name": "bronze"
+        },
+        {
+            "id": 2,
+            "layer": "referred",
+            "name": "bronze"
+        }
+    ]
+}
