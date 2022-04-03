@@ -29,7 +29,7 @@ contract Ukraine is ERC721Enumerable, Ownable {
   address public owner1;
   address public charity;
 
-  struct individualNft {
+  struct IndividualNft {
         string description;
         uint minDonated;
         uint maxDonated;
@@ -38,7 +38,7 @@ contract Ukraine is ERC721Enumerable, Ownable {
         string link;
   }
 
-  mapping(uint => individualNft) public potentialNfts;
+  mapping(uint => IndividualNft) public potentialNfts;
 
   mainContract controller;
 
@@ -106,7 +106,7 @@ contract Ukraine is ERC721Enumerable, Ownable {
      uint _minReferred,
      uint _maxReferred,
      uint _link) internal {
-        individualNft storage nft = potentialNfts[id];
+        IndividualNft storage nft = potentialNfts[id];
         nft.description = _description;
         nft.minDonated = _minDonated;
         nft.maxDonated = _maxDonated;
