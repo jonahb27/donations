@@ -9,7 +9,8 @@ const {
   expectRevert, // Assertions for transactions that should fail
 } = require("@openzeppelin/test-helpers");
 
-const { revertMessages } = require("./utils/constants.js");
+const { revertMessagesDonations } = require("./utils/constants.js");
+let revertMessages = revertMessagesDonations;
 const { ERC165 } = require('@openzeppelin/test-helpers/src/makeInterfaceId');
 
 let owner;
