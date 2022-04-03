@@ -18,7 +18,7 @@
   "function ownerOf(uint256) view returns (address)",
   "function pause(bool)",
   "function paused() view returns (bool)",
-  "function potentialNfts(uint256) view returns (string, uint256, uint256, uint256, uint256, string)",
+  "function potentialNfts(uint256) view returns (uint256, uint256, uint256, uint256, string)",
   "function renounceOwnership()",
   "function safeTransferFrom(address,address,uint256)",
   "function safeTransferFrom(address,address,uint256,bytes)",
