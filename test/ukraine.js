@@ -179,49 +179,6 @@ describe("on deployment", function () {
     });
   });
   
-  // describe.only("safeTransferFrom reverts", function() {
-//   it ("cannot transfer", async function() {
-//     await expect(hardhatUkraine.connect(donor1).safeTransferFrom(donor1.address, donor2.address, 1))
-//             .to.be
-//             .revertedWith(revertMessages.cantTransfer);
-//   });
-// });
-
-// describe.only("setContactURI reverts", function() {
-//   it ("not owner", async function() {
-//     await expect(hardhatUkraine.connect(donor1).setContactURI("eiwjoaf"))
-//             .to.be
-//             .revertedWith(revertMessages.onlyOwner);
-//   });
-// });
-
-
-// describe.only("pause reverts", function() {
-
-//     it ("cannot transfer", async function() {
-//       await expect(hardhatUkraine.connect(donor1).pause(true))
-//               .to.be
-//               .revertedWith(revertMessages.notOwner);
-//     });
-
-// });
-
-// describe.only("withdraw reverts", function() {
-
-//     it ("cannot transfer", async function() {
-//       await expect(hardhatUkraine.connect(donor1).withdraw())
-//               .to.be
-//               .revertedWith(revertMessages.notOwner);
-//     });
-
-// });
-  
-  
-  // describe("pause reverts", function() {
-  //   it ("not owner pause", async function() {
-      
-  //   });
-  // });
 
 describe("mint and update successfuls", function () {
 
@@ -258,8 +215,127 @@ describe("mint and update successfuls", function () {
         expect(await hardhatUkraine.userTokens(donor1.address)).to.be.equal(12)
     });
     
+  it("data of nfts is correct", async function () {
+    for(let i = 0; i <=25; i ++) {
+        let nft = await hardhatUkraine.potentialNfts(i);
+        checkNFTInfo(nft, i);
+    }
+  });
+
+
+
+  it("add contract and donate", async function () {
+    await hardhatDonations.connect(owner).addCharity(char2.address);
+    await hardhatDonations.connect(donor1).donate(char2.address, {value : ethAmount(3)});
+    await checkDonor(donor1.address, char1.address, 0, 0);
+    await checkCharity(constants.ZERO_ADDRESS, 0, 0, false, constants.ZERO_ADDRESS);
+    await checkCharity(char1.address, 0, 0, true);
+    await checkCharity(char2.address, ethAmount(3), ethAmount(3), true);
+    await checkDonor(donor1.address, char2.address, ethAmount(3), 0);
+    await checkDonor(donor2.address, char2.address, 0, 0);
+    await checkDonor(donor2.address, char1.address, 0, 0);
+
+  });
+
+});
+describe("mint", function() {
+  describe("mint reverts", function() {
+    it ("mint in range reverts", async function() {
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(1)});
+
+      await expect(hardhatUkraine.connect(donor1).mint(0))
+      .to.be
+      .revertedWith(revertMessages.inRange);
+
+      await expect(hardhatUkraine.connect(donor1).mint(30))
+      .to.be
+      .revertedWith(revertMessages.inRange);
+    });
+
+    it ("mint is paused reverts", async function() {
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(1)});
+      await hardhatUkraine.connect(owner).pause(true);
+
+      await expect(hardhatUkraine.connect(donor1).mint(2))
+      .to.be
+      .revertedWith(revertMessages.isNotPaused);
+    });
+
+    it ("mint has NFT reverts", async function() {
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(1)});
+      await hardhatUkraine.connect(donor1).mint(16);
+      await expect(hardhatUkraine.connect(donor1).mint(16))
+      .to.be
+      .revertedWith(revertMessages.doesntHaveNFT);
+
+    });
+
+    it ("mint does not qualify reverts", async function() {
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(1)});
+      await expect(hardhatUkraine.connect(donor1).mint(14))
+      .to.be
+      .revertedWith(revertMessages.qualifies);
+    });
+    
+
+  });
 });
 
+describe("update", function() {
+  describe("update reverts", function() {
+    it ("update in range reverts", async function() {
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(1)});
+      await hardhatUkraine.connect(donor1).mint(16);
+      await expect(hardhatUkraine.connect(donor1).update(0))
+            .to.be
+            .revertedWith(revertMessages.inRange);
+
+    });
+
+    it ("update paused reverts", async function() {
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(1)});
+      await hardhatUkraine.connect(donor1).mint(16);
+      await hardhatUkraine.connect(owner).pause(true);
+      await expect(hardhatUkraine.connect(donor1).update(16))
+            .to.be
+            .revertedWith(revertMessages.isNotPaused);
+      
+    });
+
+    it ("update hasNFT reverts", async function() {
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(1)});
+      await expect(hardhatUkraine.connect(donor1).update(16))
+            .to.be
+            .revertedWith(revertMessages.hasNFT);
+      
+    });
+
+    it ("update qualifies reverts", async function() {
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(1)});
+      await hardhatUkraine.connect(donor1).mint(16);
+      await hardhatDonations.connect(donor1).donate(char1.address, {value : ethAmount(10)});
+      await expect(hardhatUkraine.connect(donor1).update(16))
+            .to.be
+            .revertedWith(revertMessages.qualifies);  
+    });
+  });
+});
+
+describe("tokenURI reverts", function() {
+  it ("invalid tokenURI", async function() {
+    await expect(hardhatUkraine.connect(donor1).tokenURI(constants.ZERO_ADDRESS))
+            .to.be
+            .revertedWith(revertMessages.tokenURIExists);
+  });
+});
+
+describe("transferFrom reverts", function() {
+  it ("cannot transfer", async function() {
+    await expect(hardhatUkraine.connect(donor1).transferFrom(donor1.address, donor2.address, 1))
+            .to.be
+            .revertedWith(revertMessages.cantTransfer);
+  });
+});
 
 
 function addToNFTInfo(id, _minGiven, _maxGiven, _minRaised, _maxRaised, _link) {
@@ -336,3 +412,4 @@ async function checkDonor(donorAddress, charityAddress, given, raised) {
   expect(donor.given).to.equal(given);
   expect(donor.raised).to.equal(raised);
 }
+

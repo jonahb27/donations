@@ -5,7 +5,7 @@ const revertMessagesDonations = {
   isExistingCharity: "Must be approved Charity",
   addressesNotEqual: "Addresses CANNOT be the same",
   needToBePositive: "Donation CANNOT be Zero",
-  pendingNeedToBePositive: "Pending CANNOT be Zero"
+  pendingNeedToBePositive: "Pending CANNOT be Zero",
 };
 
 const revertMessagesUkraine = {
