@@ -22,10 +22,10 @@ contract Ukraine is ERC721Enumerable, Ownable {
     address public charity;
 
     struct IndividualNft {
-        uint minDonated;
-        uint maxDonated;
-        uint minReferred;
-        uint maxReferred;
+        uint minGiven;
+        uint maxGiven;
+        uint minRaised;
+        uint maxRaised;
         string link;
     }
 
@@ -56,10 +56,11 @@ contract Ukraine is ERC721Enumerable, Ownable {
         uint given = controller.getGiven(charity, msg.sender);
         uint raised = controller.getRaised(charity, msg.sender);
         IndividualNft memory nft = potentialNfts[requested];
-        bool isQualified = (given >= nft.minDonated) &&
-                           (given < nft.maxDonated) &&
-                           (raised >= nft.minReferred) &&
-                           (raised < nft.maxReferred);
+        bool isQualified = (given != 0 || raised != 0) &&
+                           (given >= nft.minGiven) &&
+                           (given < nft.maxGiven) &&
+                           (raised >= nft.minRaised) &&
+                           (raised < nft.maxRaised);
         require(isQualified, "Not qualified for this NFT");
         _;
     }
@@ -159,17 +160,17 @@ contract Ukraine is ERC721Enumerable, Ownable {
     //-------internal functions ---
     function _makeNFT(
         uint id,
-        uint _minDonated,
-        uint _maxDonated,
-        uint _minReferred,
-        uint _maxReferred,
+        uint _minGiven,
+        uint _maxGiven,
+        uint _minRaised,
+        uint _maxRaised,
         string memory _link)
         internal {
         IndividualNft storage nft = potentialNfts[id];
-        nft.minDonated = _minDonated;
-        nft.maxDonated = _maxDonated;
-        nft.minReferred = _minReferred;
-        nft.maxReferred = _maxReferred;
+        nft.minGiven = _minGiven;
+        nft.maxGiven = _maxGiven;
+        nft.minRaised = _minRaised;
+        nft.maxRaised = _maxRaised;
         nft.link = _link;
 
     }
