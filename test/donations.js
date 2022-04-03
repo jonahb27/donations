@@ -723,79 +723,79 @@ describe("saveFunds", function () {
       await hardhatDonations.connect(owner).addCharity(char2.address)
     });
 
-    // it ("saveFunds basic check balance", async function() {
-    //   await checkCharity(char1.address, 0, 0, true);
-    //   await checkCharity(char2.address, 0, 0, true);
-    //   var before = await getBalance(char1.address);
-    //   var beforeDonor = await getBalance(donor1.address);
-    //   await hardhatDonations
-    //     .connect(donor1)
-    //     .donate(char1.address, { value: ethAmount(3)});
+    it ("saveFunds basic check balance", async function() {
+      await checkCharity(char1.address, 0, 0, true);
+      await checkCharity(char2.address, 0, 0, true);
+      var before = await getBalance(char1.address);
+      var beforeDonor = await getBalance(donor1.address);
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
       
       
-    //   await checkCharity(char1.address, ethAmount(3), ethAmount(3), true);
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true);
 
-    //   await hardhatDonations
-    //       .connect(owner)
-    //       .saveFunds(char1.address);
+      await hardhatDonations
+          .connect(owner)
+          .saveFunds(char1.address);
 
-    //   await checkCharity(char1.address, ethAmount(3), 0, true);
-
-
-    //   var after = await getBalance(char1.address);
-    //   var afterDonor = await getBalance(donor1.address);
-
-    //   // why is this? 
-    //   assert.isBelow(before + (ethAmount(3) / 1e18), after, 'increase in charity');
-    //   assert.isAbove(beforeDonor - 3, afterDonor, 'increase in charity');
-
-    // });
-
-    // it ("withdraw basic check balance double", async function() {
-    //   await checkCharity(char1.address, 0, 0, true);
-    //   await checkCharity(char2.address, 0, 0, true);
-    //   var before = await getBalance(char1.address);
-    //   var before2 = await getBalance(char2.address);
-    //   var beforeDonor = await getBalance(donor1.address);
+      await checkCharity(char1.address, ethAmount(3), 0, true);
 
 
-    //   await hardhatDonations
-    //     .connect(donor1)
-    //     .donate(char1.address, { value: ethAmount(3)});
+      var after = await getBalance(char1.address);
+      var afterDonor = await getBalance(donor1.address);
+
+      expect(before + 3).to.be.equal(after);
+      assert.isAbove(beforeDonor - 3, afterDonor, 'increase in charity');
+
+    });
+
+    it ("withdraw basic check balance double", async function() {
+      await checkCharity(char1.address, 0, 0, true);
+      await checkCharity(char2.address, 0, 0, true);
+      var before = await getBalance(char1.address);
+      var before2 = await getBalance(char2.address);
+      var beforeDonor = await getBalance(donor1.address);
+
+
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char1.address, { value: ethAmount(3)});
       
-    //   await checkCharity(char1.address, ethAmount(3), ethAmount(3), true);
+      await checkCharity(char1.address, ethAmount(3), ethAmount(3), true);
 
 
-    //   await hardhatDonations
-    //       .connect(owner)
-    //       .saveFunds(char1.address);
+      await hardhatDonations
+          .connect(owner)
+          .saveFunds(char1.address);
 
-    //   await checkCharity(char1.address, ethAmount(3), 0, true);
+      await checkCharity(char1.address, ethAmount(3), 0, true);
 
 
-    //   await hardhatDonations
-    //     .connect(donor1)
-    //     .donate(char2.address, { value: ethAmount(3)});
+      await hardhatDonations
+        .connect(donor1)
+        .donate(char2.address, { value: ethAmount(3)});
 
-    //   await checkCharity(char2.address, ethAmount(3), ethAmount(3), true);
+      await checkCharity(char2.address, ethAmount(3), ethAmount(3), true);
 
       
-    //   await hardhatDonations
-    //       .connect(owner)
-    //       .saveFunds(char2.address);
+      await hardhatDonations
+          .connect(owner)
+          .saveFunds(char2.address);
       
-    //   await checkCharity(char2.address, ethAmount(3), 0, true);
+      await checkCharity(char2.address, ethAmount(3), 0, true);
 
 
-    //   var after = await getBalance(char1.address);
-    //   var after2 = await getBalance(char2.address);
-    //   var afterDonor = await getBalance(donor1.address);
+      var after = await getBalance(char1.address);
+      var after2 = await getBalance(char2.address);
+      var afterDonor = await getBalance(donor1.address);
 
-    //   assert.isAbove(before + 3, after, 'increase in charity');
-    //   assert.isAbove(before2 + 3, after2, 'increase in charity');
-    //   assert.isAbove(beforeDonor - 6, afterDonor, 'increase in donor');
+      expect(Math.round(before + 3)).to.be.equal(Math.round(after));
+      expect(Math.round(before2 + 3)).to.be.equal(Math.round(after2));
 
-    // });
+      assert.isAbove(beforeDonor - 6, afterDonor, 'increase in donor');
+
+    });
 
     it ("withdraw basic", async function() {
       await checkCharity(char1.address, 0, 0, true);
