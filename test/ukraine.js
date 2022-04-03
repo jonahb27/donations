@@ -274,35 +274,35 @@ function addToNFTInfo(id, _minGiven, _maxGiven, _minRaised, _maxRaised, _link) {
 
 function makeNfts() {
     //Wood
-    addToNFTInfo(1, 0, ethAmount(.01), 0, ethAmount(.01), "ipfs://Qmb4n1deUMQwdZKVoBckKGNZvQQzFZC1ZgEpWzA36Rp9J4/");
-    addToNFTInfo(2, 0, ethAmount(.01), ethAmount(.01), ethAmount(.1), "ipfs://QmdTe4kb1GnVJYVFicrVHzN719iUzkwSKFMQuoLvVRuwXg/");
-    addToNFTInfo(3, 0, ethAmount(.01), ethAmount(.1), ethAmount(1), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(4, 0, ethAmount(.01), ethAmount(1), ethAmount(10), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(5, 0, ethAmount(.01), ethAmount(10), ethAmount(10**11), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
+    addToNFTInfo(1, 0, ethAmount(.01), 0, ethAmount(.01), "ipfs://QmfPjyjJf52oLe9Tp4ZoL8ZY7QRMKcks4H7A9ZWJHiHBS4/");
+    addToNFTInfo(2, 0, ethAmount(.01), ethAmount(.01), ethAmount(.1), "ipfs://QmQaaF5nD1owB2481Lv6io9vBaTuKvetRZAm4iR84F456b/");
+    addToNFTInfo(3, 0, ethAmount(.01), ethAmount(.1), ethAmount(1), "ipfs://QmSd2ETNY3vHEyrHnd8AsqkuGxnaxNNXQSnZgDdGB8iHnW/");
+    addToNFTInfo(4, 0, ethAmount(.01), ethAmount(1), ethAmount(10), "ipfs://Qmdb3fMH4NXJn2Q9uoabWmF43h6cxZvVL4eHAfZDDR1Mqt/");
+    addToNFTInfo(5, 0, ethAmount(.01), ethAmount(10), ethAmount(10**11), "ipfs://QmajYunaTiq3LrLJYGSMKNBuj9h2vPT3XFder1crABSpAx/");
     //Bronze
     addToNFTInfo(6, ethAmount(.01), ethAmount(.1), 0, ethAmount(.01), "ipfs://QmVvo5CNcqz7KbsbunbEhzBYJHXj6aEeaN5xPgP3nwvojS/");
     addToNFTInfo(7, ethAmount(.01), ethAmount(.1), ethAmount(.01), ethAmount(.1),"ipfs://QmWd8iUhiq492aXWmDND8uTAeNVa2GShAZzAQEnKzs5rE8/");
     addToNFTInfo(8, ethAmount(.01), ethAmount(.1), ethAmount(.1), ethAmount(1), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
     addToNFTInfo(9, ethAmount(.01), ethAmount(.1), ethAmount(1), ethAmount(10), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(10, ethAmount(.01), ethAmount(.1), ethAmount(10), ethAmount(10**11), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
+    addToNFTInfo(10, ethAmount(.01), ethAmount(.1), ethAmount(10), ethAmount(10**11), "ipfs://QmVo5i8kv57uQnExxTQS1ZwZpp2yCXYXimMRmXcfqKsH1v/");
     //Silver
-    addToNFTInfo(11, ethAmount(.1), ethAmount(1), 0, ethAmount(.01), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(12, ethAmount(.1), ethAmount(1), ethAmount(.01), ethAmount(.1),"ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(13, ethAmount(.1), ethAmount(1), ethAmount(.1), ethAmount(1), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(14, ethAmount(.1), ethAmount(1), ethAmount(1), ethAmount(10), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(15, ethAmount(.1), ethAmount(1), ethAmount(10), ethAmount(10**11), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
+    addToNFTInfo(11, ethAmount(.1), ethAmount(1), 0, ethAmount(.01), "ipfs://QmVrRJpVuNNg3QTZqLp7F9eiLuBZkTbVZMnjtj8HZGst1n/");
+    addToNFTInfo(12, ethAmount(.1), ethAmount(1), ethAmount(.01), ethAmount(.1),"ipfs://QmWuE2x6dHamMVmekroarorwnteWmvRC6eCkmc1ieuhHzk/");
+    addToNFTInfo(13, ethAmount(.1), ethAmount(1), ethAmount(.1), ethAmount(1), "ipfs://QmZNPAtkKStGGfHAaSQTQAVsnoqktsaiHMNSsBw7CQR2qU/");
+    addToNFTInfo(14, ethAmount(.1), ethAmount(1), ethAmount(1), ethAmount(10), "ipfs://Qmb8mSjnoZTjA3qsnrK5fMh2Szy8rvaZnoKWK4c2aWkcPX/");
+    addToNFTInfo(15, ethAmount(.1), ethAmount(1), ethAmount(10), ethAmount(10**11), "ipfs://QmaRpnbfuGhrQrBDjyuuw4KydeuNjQ7hbTGvVH8omWoo6s/");
     //Gold
-    addToNFTInfo(16, ethAmount(1), ethAmount(10), 0, ethAmount(.01),"ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(17, ethAmount(1), ethAmount(10), ethAmount(.01), ethAmount(.1), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(18, ethAmount(1), ethAmount(10), ethAmount(.1), ethAmount(1), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(19, ethAmount(1), ethAmount(10), ethAmount(1), ethAmount(10), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(20, ethAmount(1), ethAmount(10), ethAmount(10), ethAmount(10**11), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
+    addToNFTInfo(16, ethAmount(1), ethAmount(10), 0, ethAmount(.01),"ipfs://QmUDhiscNYqeYXfWrjf5CcvZRST1gsfqrS1JQzP2C7qWYo/");
+    addToNFTInfo(17, ethAmount(1), ethAmount(10), ethAmount(.01), ethAmount(.1), "ipfs://QmPHPcQfDiyk4DcBsCYrgZJWacMURjsa6UZvaZzcddY1B1/");
+    addToNFTInfo(18, ethAmount(1), ethAmount(10), ethAmount(.1), ethAmount(1), "ipfs://QmYVq3p4VzFYJScu6RbZnxigoqZaozP6sHkcw94m73Pkfg/");
+    addToNFTInfo(19, ethAmount(1), ethAmount(10), ethAmount(1), ethAmount(10), "ipfs://QmekkQpzFce7T9oHhsMyCUhJJvZybxRLXS1bM3yzRw2xwU/");
+    addToNFTInfo(20, ethAmount(1), ethAmount(10), ethAmount(10), ethAmount(10**11), "ipfs://QmQ4w989pG5zQFoQ7jA6zUC3aZrzoNzriYJiQLy8uwC8qM/");
     //Diamond
-    addToNFTInfo(21, ethAmount(10), ethAmount(10**11), 0, ethAmount(.01), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(22, ethAmount(10), ethAmount(10**11), ethAmount(.01), ethAmount(.1), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(23, ethAmount(10), ethAmount(10**11), ethAmount(.1), ethAmount(1), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(24, ethAmount(10), ethAmount(10**11), ethAmount(1), ethAmount(10), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
-    addToNFTInfo(25, ethAmount(10), ethAmount(10**11), ethAmount(10), ethAmount(10**11), "ipfs://QmfKJqXArXg6mG2YSQBHGwzfnyNTbvxcoTcLt5x4cADy9C/");
+    addToNFTInfo(21, ethAmount(10), ethAmount(10**11), 0, ethAmount(.01), "ipfs://QmbX2L1rA3weNywBtqMwRQNdhzDrNro1yrKV5RMWQ9XDGX/");
+    addToNFTInfo(22, ethAmount(10), ethAmount(10**11), ethAmount(.01), ethAmount(.1), "ipfs://QmPyvxBxZoiXtwc4GuQQALBVsw3wgdMkYe21pe1kfZWDuc/");
+    addToNFTInfo(23, ethAmount(10), ethAmount(10**11), ethAmount(.1), ethAmount(1), "ipfs://QmNzLRvbfxasA41aEbTgfUhB2yJ19EiEpQXoSd1bPaQzpp/");
+    addToNFTInfo(24, ethAmount(10), ethAmount(10**11), ethAmount(1), ethAmount(10), "ipfs://QmZdW6Va54wJDQ6MUxRJswwcXqoAoz2zmXRvK8EhNJPvR2/");
+    addToNFTInfo(25, ethAmount(10), ethAmount(10**11), ethAmount(10), ethAmount(10**11), "ipfs://QmR6aABhut77FDLLuSHMQ6L2zabxELCmRkQKAWaGn4aewX/");
 }
 
 function ethAmount(amount) {
