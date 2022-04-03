@@ -26,6 +26,11 @@ beforeEach(async () => {
   [owner, char1, char2, donor1, donor2] = signerList;
   const Donations = await ethers.getContractFactory("Donations");
   hardhatDonations= await Donations.deploy();
+  
+  await expect(hardhatDonations.connect(owner).addCharity(char1.address))
+        .to.emit(hardhatDonations, "NewCharity")
+        .withArgs(char1.address);
+
   const Ukraine = await ethers.getContractFactory("Ukraine");
   hardhatUkraine = await Ukraine.deploy(
       "Ukraine Donations - Altruia", 
@@ -36,13 +41,18 @@ beforeEach(async () => {
     );
 });
 
-describe("on deployment", function () {
+describe.only("on deployment", function () {
   it("contract exists", async function () {
     // await checkDonor(donor1.address, char1.address, 0, 0);
     // await checkCharity(constants.ZERO_ADDRESS, 0, 0, false, constants.ZERO_ADDRESS);
     assert(true);
     // for(var i = 0; i <=25; i ++) {
-    //     console.log(await hardhatUkraine.potentialNfts(1))
+    //     console.log(await hardhatUkraine.potentialNfts(i))
     // }
+  });
+
+  it("contract exists", async function () {
+    var nft1 = await hardhatUkraine.potentialNfts(1);
+    expect(nft1.description).to.be.equal("wood-wood");
   });
 });
