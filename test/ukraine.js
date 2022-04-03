@@ -271,6 +271,7 @@ function addToNFTInfo(id, _minGiven, _maxGiven, _minRaised, _maxRaised, _link) {
     nft.link = _link;
     nftInfo[id] = nft;
 }
+
 function makeNfts() {
     //Wood
     addToNFTInfo(1, 0, ethAmount(.01), 0, ethAmount(.01), "ipfs://Qmb4n1deUMQwdZKVoBckKGNZvQQzFZC1ZgEpWzA36Rp9J4/");
@@ -315,11 +316,11 @@ async function getBalance(address) {
 
 
 async function checkNFTInfo(nft, number) {
-    expect(nft.minGiven).to.equal(nftInfo[number].minGiven);
-    expect(nft.maxGiven).to.equal(nftInfo[number].maxGiven);
-    expect(nft.minRaised).to.equal(nftInfo[number].minRaised);
-    expect(nft.maxRaised).to.equal(nftInfo[number].maxRaised);
-    expect(nft.link).to.equal(nftInfo[number].link);
+    expect(nft.minGiven).to.equal(await nftInfo[number].minGiven);
+    expect(nft.maxGiven).to.equal(await nftInfo[number].maxGiven);
+    expect(nft.minRaised).to.equal(await nftInfo[number].minRaised);
+    expect(nft.maxRaised).to.equal(await nftInfo[number].maxRaised);
+    expect(nft.link).to.equal(await nftInfo[number].link);
 
 }
 
