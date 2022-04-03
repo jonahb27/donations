@@ -1,0 +1,18 @@
+{
+    "name": "Altruia Tier 02-04",
+    "description": "Altruia is a on-chain platform making charity and donations fun and transparent!",
+    "image": "NEED TO INPUT IPFS",
+    "edition": 1,
+    "attributes": [
+        {
+            "id": 2,
+            "layer": "donated",
+            "name": "bronze"
+        },
+        {
+            "id": 4,
+            "layer": "referred",
+            "name": "gold"
+        }
+    ]
+}
