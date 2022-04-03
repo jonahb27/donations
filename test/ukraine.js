@@ -23,7 +23,6 @@ let hardhatUkraine;
 
 var nftInfo = new Map();
 makeNfts();
-console.log(nftInfo)
 
 beforeEach(async () => {
   signerList = await ethers.getSigners(); // get accounts
@@ -55,10 +54,12 @@ describe.only("on deployment", function () {
     // }
   });
 
-  it("contract exists", async function () {
-    // var nft1 = await hardhatUkraine.potentialNfts(1);
-    // expect(nft1.description).to.be.equal("wood-wood");
-  });
+//   it("data of nfts is correct", async function () {
+//     for(let i = 0; i <=25; i ++) {
+//         let nft = await hardhatUkraine.potentialNfts(i);
+//         checkNFTInfo(nft, i);
+//     }
+//   });
 });
 
 
