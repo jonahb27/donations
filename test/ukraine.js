@@ -315,10 +315,10 @@ async function getBalance(address) {
 
 
 async function checkNFTInfo(nft, number) {
-    expect(nft.minDonated).to.equal(nftInfo[number].minDonated);
-    expect(nft.maxDonated).to.equal(nftInfo[number].maxDonated);
-    expect(nft.minReferred).to.equal(nftInfo[number].minReferred);
-    expect(nft.maxReferred).to.equal(nftInfo[number].maxReferred);
+    expect(nft.minGiven).to.equal(nftInfo[number].minGiven);
+    expect(nft.maxGiven).to.equal(nftInfo[number].maxGiven);
+    expect(nft.minRaised).to.equal(nftInfo[number].minRaised);
+    expect(nft.maxRaised).to.equal(nftInfo[number].maxRaised);
     expect(nft.link).to.equal(nftInfo[number].link);
 
 }
