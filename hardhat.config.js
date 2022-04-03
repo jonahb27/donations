@@ -41,7 +41,7 @@ module.exports = {
     runOnCompile: true,
     clear: true,
     flat: true,
-    only: ['Donations'],
+    only: ['Donations', 'Ukraine'],
     spacing: 2,
     pretty: true,
   },

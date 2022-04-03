@@ -1,0 +1,4 @@
+[
+  "function getGiven(address,address) view returns (uint256)",
+  "function getRaised(address,address) view returns (uint256)"
+]

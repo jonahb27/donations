@@ -745,7 +745,7 @@ describe("saveFunds", function () {
       var after = await getBalance(char1.address);
       var afterDonor = await getBalance(donor1.address);
 
-      expect(before + 3).to.be.equal(after);
+      expect(Math.round(before + 3)).to.be.equal(Math.round(after));
       assert.isAbove(beforeDonor - 3, afterDonor, 'increase in charity');
 
     });
