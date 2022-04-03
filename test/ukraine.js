@@ -179,21 +179,42 @@ describe("on deployment", function () {
     });
   });
   
-  // describe("safeTransferFrom reverts", function() {
-  //   it ("cannot transfer", async function() {
-  //     await expect(hardhatUkraine.connect(donor1).safeTransferFrom(donor1.address, donor2.address, 1))
-  //             .to.be
-  //             .revertedWith(revertMessages.cantTransfer);
-  //   });
-  // });
-  
-  // describe("setContactURI reverts", function() {
-  //   it ("not owner", async function() {
-  //     await expect(hardhatUkraine.connect(donor1).setContactURI("eiwjoaf"))
-  //             .to.be
-  //             .revertedWith(revertMessages.onlyOwner);
-  //   });
-  // });
+  // describe.only("safeTransferFrom reverts", function() {
+//   it ("cannot transfer", async function() {
+//     await expect(hardhatUkraine.connect(donor1).safeTransferFrom(donor1.address, donor2.address, 1))
+//             .to.be
+//             .revertedWith(revertMessages.cantTransfer);
+//   });
+// });
+
+// describe.only("setContactURI reverts", function() {
+//   it ("not owner", async function() {
+//     await expect(hardhatUkraine.connect(donor1).setContactURI("eiwjoaf"))
+//             .to.be
+//             .revertedWith(revertMessages.onlyOwner);
+//   });
+// });
+
+
+// describe.only("pause reverts", function() {
+
+//     it ("cannot transfer", async function() {
+//       await expect(hardhatUkraine.connect(donor1).pause(true))
+//               .to.be
+//               .revertedWith(revertMessages.notOwner);
+//     });
+
+// });
+
+// describe.only("withdraw reverts", function() {
+
+//     it ("cannot transfer", async function() {
+//       await expect(hardhatUkraine.connect(donor1).withdraw())
+//               .to.be
+//               .revertedWith(revertMessages.notOwner);
+//     });
+
+// });
   
   
   // describe("pause reverts", function() {
