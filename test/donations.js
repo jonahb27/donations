@@ -18,7 +18,7 @@ let char2;
 let donor1;
 let donor2;
 let signerList;
-let hardhatRound;
+let hardhatDonations;
 
 beforeEach(async () => {
   signerList = await ethers.getSigners(); // get accounts
